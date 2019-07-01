@@ -18,18 +18,26 @@
 
     var svg = d3.select(".graph").append("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        
 
     var linkForce = d3
         .forceLink()
         .id(function (link) { return link.id })
+        .strength(function (link) { return 0.125});
         
+        
+    const forceX = d3.forceX(width / 2).strength(0.05);
+    const forceY = d3.forceY(height / 2).strength(0.06);
+
 
     var simulation = d3
         .forceSimulation()
         .force('link', linkForce)
-        .force('charge', d3.forceManyBody().strength(-1000))
-        .force('center', d3.forceCenter(width / 2, height / 2));
+        .force('charge', d3.forceManyBody().strength(-70))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('x', forceX)
+        .force('y',  forceY);
 
 
     var dragDrop = d3.drag().on('start', function (node) {
@@ -46,10 +54,6 @@
             node.fx = null
             node.fy = null
         })
-
- function getNodeColor(node) {
-    return node.level === 1 ? '#f21f0c' : 'ffbb8b'
-  }
 
   function getNeighbors(node) {
     return links.reduce(function (neighbors, link) {
