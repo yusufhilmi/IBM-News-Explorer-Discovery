@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class=graph></div>
+
+<div class=headlines><div class=titles></div></div>
+<p id="demo"></p>
+<button onclick="myFunction()">Try it</button>
+
+<script>
+  function myFunction() {
+    var random = Math.random();
+    var nodes= {'la': random};
+document.getElementById("demo").innerHTML = nodes.la ;
+  }
+</script>
+
+{% endblock %}

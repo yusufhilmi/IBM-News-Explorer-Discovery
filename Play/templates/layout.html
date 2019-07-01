@@ -1,0 +1,22 @@
+<!doctype html>
+
+<head>
+<title>News Visualization</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+<script src="http://d3js.org/d3.v4.min.js"></script>
+<style>
+  #myDIV {
+    border: 1px solid black;
+    margin-bottom: 10px;
+  }
+  </style>
+</head>
+
+<body>
+<div class=page>
+  {% block body %}{% endblock %}
+</div>
+
+</body>
