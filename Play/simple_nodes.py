@@ -31,10 +31,21 @@ def index():
     words = []
     articles = []
 
+    """
+
+    my_query = discovery.query(environment_id,
+                               collection_id,
+                               count=1,
+                               natural_language_query='composite')
+
+    data = my_query.result  # encoding fixed mbcs is the correct one
+    """
+
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "static", "IBM_composite_query.json")
     data = json.load(open(json_url, encoding="mbcs"))  # encoding fixed mbcs is the correct one
-    index_num = len(data['results'][1]['enriched_text']['entities'])
+
+    # index_num = len(data['results'][1]['enriched_text']['entities'])
 
     # index_res = len(data['results'])
 
@@ -46,21 +57,38 @@ def index():
     for j in range(len(data['results'])):
         articles.append(data['results'][j]['title'])
         # print(articles[j])
-        nodes.append({'id': j, 'label': articles[j], 'level': 1})
+        nodes.append({'id': j, 'label': articles[j][0:15], 'level': 1})
         count += 1
 
     for j in range(len(articles)):
         label_count += len(data['results'][j]['enriched_text']['entities'])
-        print(label_count)
-            # word = request.json['results'][1]['enriched_text']['entities'][i]['text']
+        # print(label_count)
+        # word = request.json['results'][1]['enriched_text']['entities'][i]['text']
         for i in range(len(data['results'][j]['enriched_text']['entities'])):
             # print(words[i])
-            if data['results'][j]['enriched_text']['entities'][i]['type'] == 'Location':
+            if data['results'][j]['enriched_text']['entities'][i]['type'] == 'Person' or \
+                    data['results'][j]['enriched_text']['entities'][i]['type'] == 'Company':
+                if j != 0:
+                    if data['results'][j]['enriched_text']['entities'][i]['text'] not in words:
+                        words.append(data['results'][j]['enriched_text']['entities'][i]['text'])
+                        nodes.append({'id': count, 'label': words[-1], 'level': 2})
+                        print(words[-1])
+                        # print(nodes[-1])
+                        links.append({'source': count, 'target': j})
+                        count += 1
+                    else:
+                        conn_source = words.index(data['results'][j]['enriched_text']['entities'][i]['text'])
+                        print(words[conn_source])
+                        links.append({'source': len(data['results']) + conn_source, 'target': j})
+                        print(links[-1])
+
+            else:
                 words.append(data['results'][j]['enriched_text']['entities'][i]['text'])
                 nodes.append({'id': count, 'label': words[-1], 'level': 2})
-                print(nodes[-1])
+                # print(nodes[-1])
                 links.append({'source': count, 'target': j})
                 count += 1
+
         print("-----------------------------------------")
     # print(nodes)
     # print(links)
