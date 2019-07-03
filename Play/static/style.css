@@ -11,7 +11,7 @@ td              { width: 33.33%; }
 table           { padding-top: 0.8em; }
 hr              { border: 0; height: 0; border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(255,255,255,0.3);}
 
-.page           { height: 85vh; margin: 3em; background: white; 
+.page           { height:90vh; margin: 0.5em; background: white;
                      box-shadow: 10px 10px 5px #888888;}
 .entries        { margin: 0; padding: 0;  }
 .add-entry      { font-size: 0.9em; font-weight: bold; padding: 0.8em;}
@@ -25,8 +25,34 @@ hr              { border: 0; height: 0; border-top: 1px solid rgba(0,0,0,0.1); b
 #loading        { display: none;}
 #chart          { margin: auto; display: none; }
 .graph          { width: 75%; height: 100%; background: #273452;
-                   float: left}
-.headlines      { width: 25%;  height: 100%; float: left; 
+                   float: right}
+.headlines      { width: 25%;  height: 100%; float: left;
                    overflow-y: auto;
                   }
-.titles         { padding: .5em }
+.titles         {}
+
+.accord1 li {
+            list-style: none;
+        }
+.accord1 ul {
+            margin:0;
+            padding:0.2em;
+        }
+        .accord1 li p {
+            padding: 5px 0;
+            background: #ccc;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .accord-content {
+            background-color: #323232;
+            color: #fff;
+            font-size: 9px;
+            font-family: arial;
+            display: none;
+            padding: 10px;
+        }
+.accord1 li p:hover  {
+  background-color: #235479;
+}

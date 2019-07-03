@@ -1,24 +1,10 @@
-{% extends "layout.html" %}
-{% block body %}
 
-<div class=graph></div>
-
-<div class=headlines>
-    <div class=titles>
-        <div class="accord1">
-            <ul>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<script>
     var width = $(".graph").width()   //comma!!!!
     var height = $(".graph").height();
 
 
 
-    var nodes = {{ nodes|safe }}; //it works this way 
+    var nodes = {{ nodes|safe }}; //it works this way
     var links = {{ links|safe }};
     var articles = {{ articles|safe }}
 
@@ -30,14 +16,14 @@
     loadHeadlines();
 
 
-    $(".accord-content").hide();  
+    $(".accord-content").hide();
     $('.accord1 li p').click(function () {
             $(this).next(".accord-content").slideToggle();
             $(this).closest("li").siblings().find('.accord-content').slideUp();
-            
+
         });
 
-        
+
 
 
 
@@ -222,6 +208,3 @@
       });
 
       simulation.force("link").links(links);
-      </script>
-
-      {% endblock %}
