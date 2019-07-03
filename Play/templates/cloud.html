@@ -22,64 +22,43 @@
     var links = {{ links|safe }};
     var articles = {{ articles|safe }}
 
+
+
+    var companies = ''; 
+
+    function linked(n){
+      for( var k in nodes){
+   //     console.log(nodes[links[k]['target']]['label']);
+     //   console.log(nodes[links[k]['source']]['label']);
+        if(k == n){
+          console.log(nodes[links[k]['source']]['label']);
+          console.log(nodes[links[k]['target']]['label']);
+          console.log('------------------------------------------------');
+        }
+
+        companies = companies + ',' + nodes[links[k]['source']]['label'];
+        
+      }
+      return companies;
+    }
+
+    // console.log(companies);
     function loadHeadlines() {
             for(var i in articles){
-                $(".accord1 ul").append('<li><p>'+ articles[i] + '</p><div class="accord-content">' + nodes[i]['label'] + '</div></li>');
+                $(".accord1 ul").append('<li><h5>'+ articles[i] + '</h5><div class="accord-content"><h6>' 
+                  + nodes[i]['summary'] + '</h6><a href='+ nodes[i]['source'] + ''+'>Full Article</a>'
+                  + '<p>"companies linked:"' + linked(i) + '</p>' + '</div></li>');
             }
         }
     loadHeadlines();
 
 
     $(".accord-content").hide();  
-    $('.accord1 li p').click(function () {
+    $('.accord1 li h5').click(function () {
             $(this).next(".accord-content").slideToggle();
             $(this).closest("li").siblings().find('.accord-content').slideUp();
             
         });
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

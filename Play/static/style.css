@@ -6,10 +6,10 @@ a:active        {text-decoration: none;}
 a:visited       {color:grey;}
 h1, h2          { font-family: 'Times', serif; }
 h1              { border-bottom: 2px solid #eee; }
-h2              { font-size: 1.2em;}
+h2              { font-size: 0.2em;}
 td              { width: 33.33%; }
 table           { padding-top: 0.8em; }
-hr              { border: 0; height: 0; border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(255,255,255,0.3);}
+hr              { border: 0; height: 0; border-top: 0.1px solid rgba(0,0,0,0.1); border-bottom: 0.1px solid rgba(255,255,255,0.3);}
 
 .page           { height:90vh; margin: 0.5em; background: white;
                      box-shadow: 10px 10px 5px #888888;}
@@ -43,6 +43,7 @@ hr              { border: 0; height: 0; border-top: 1px solid rgba(0,0,0,0.1); b
             background: #ccc;
             text-align: center;
             cursor: pointer;
+            font-size: .8em;
         }
 
         .accord-content {
