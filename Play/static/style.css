@@ -38,7 +38,7 @@ hr              { border: 0; height: 0; border-top: 0.1px solid rgba(0,0,0,0.1);
             margin:0;
             padding:0.2em;
         }
-        .accord1 li p {
+        .accord1 li h5 {
             padding: 5px 0;
             background: #ccc;
             text-align: center;
@@ -54,6 +54,7 @@ hr              { border: 0; height: 0; border-top: 0.1px solid rgba(0,0,0,0.1);
             display: none;
             padding: 10px;
         }
-.accord1 li p:hover  {
+.accord1 li h5:hover  {
   background-color: #235479;
+  border-radius: 2px;
 }
