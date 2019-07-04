@@ -1,5 +1,5 @@
 body            { font-family: sans-serif; background: #eee; }
-a, h1, h2       { color: #383838; }
+a               { color: #fff; }
 a:link          {text-decoration: none;}
 a:hover         {text-decoration: underline;}
 a:active        {text-decoration: none;}
@@ -44,6 +44,18 @@ hr              { border: 0; height: 0; border-top: 0.1px solid rgba(0,0,0,0.1);
             text-align: center;
             cursor: pointer;
             font-size: .8em;
+        }
+        .accord1 li a {
+            padding: 5px 0;
+            text-align: right;
+            cursor: pointer;
+            font-size: .8em;
+        }
+        .accord1 li h6 {
+            padding: 5px 0;
+            text-align: left;
+            font-size: 1em;
+
         }
 
         .accord-content {

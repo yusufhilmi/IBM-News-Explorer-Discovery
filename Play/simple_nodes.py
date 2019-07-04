@@ -4,6 +4,14 @@ import os
 from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash, json, jsonify
 
+"""   --------------for discovery------------------
+from classified import discovery
+username = discovery.username
+password = discovery.password
+environment_id = 'system'
+collection_id = 'news-en'
+"""
+
 """     --------  For Local Access   -------------
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 json_url = os.path.join(SITE_ROOT, "static", "IBM_composite_query.json")
@@ -12,7 +20,6 @@ print(str(data))
 """
 
 app = Flask(__name__)
-
 
 @app.route('/favicon.ico')
 def favicon():
@@ -32,14 +39,13 @@ def index():
     articles = []
 
     """
-
     my_query = discovery.query(environment_id,
                                collection_id,
-                               count=1,
+                               count=10,
                                natural_language_query='composite')
-
+    
     data = my_query.result  # encoding fixed mbcs is the correct one
-    """
+    """ 
 
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "static", "IBM_composite_query.json")
@@ -66,43 +72,54 @@ def index():
         category = data['results'][j]['enriched_text']['categories'][0]['label']
 
         nodes.append(
-            {'date': date, 'summary': summary, 'sentiment': sentiment, 'source': source, 'type': type, 'label': name[0:15],
+            {'date': date, 'summary': summary, 'sentiment': sentiment, 'source': source, 'type': type,
+             'label': name[0:15],
              'documentID': document_id, 'category': category, 'id': j, 'level': 1})
         count += 1
-
+    concepts = []
     for j in range(len(articles)):
-        label_count += len(data['results'][j]['enriched_text']['entities'])
+        entities = data['results'][j]['enriched_text']['entities']
+        label_count += len(entities)
         # print(label_count)
         # word = request.json['results'][1]['enriched_text']['entities'][i]['text']
-        for i in range(len(data['results'][j]['enriched_text']['entities'])):
+        concepts.append([])
+        for k in range(len(data['results'][j]['enriched_text']['concepts'])):
+            concepts[j].append(data['results'][j]['enriched_text']['concepts'][k]['text'])
+
+
+        for i in range(len(entities)):
             # print(words[i])
-            if data['results'][j]['enriched_text']['entities'][i]['relevance'] > 0.05:
-                if data['results'][j]['enriched_text']['entities'][i]['type'] == 'Location':
+
+            if entities[i]['relevance'] > 0.05:
+                type_rel = entities[i]['type']  # type of extracted nodes
+                if type_rel == 'Person' or type_rel == 'Location' or type_rel == 'Organization' or type_rel == 'Company':
                     if j != 0:
-                        if data['results'][j]['enriched_text']['entities'][i]['text'] not in words:
-                            words.append(data['results'][j]['enriched_text']['entities'][i]['text'])
-                            nodes.append({'id': count, 'label': words[-1], 'level': 2})
-                            print(words[-1])
+                        if entities[i]['text'] not in words:
+                            words.append(entities[i]['text'])
+                            nodes.append({'id': count, 'label': words[-1], 'level': 2, 'type': type_rel})
+                            # print(words[-1])
                             # print(nodes[-1])
                             links.append({'source': count, 'target': j})
                             count += 1
                         else:
-                            conn_source = words.index(data['results'][j]['enriched_text']['entities'][i]['text'])
-                            print(words[conn_source])
+                            conn_source = words.index(entities[i]['text'])
+                            # print(words[conn_source])
                             links.append({'source': len(data['results']) + conn_source, 'target': j})
-                            print(links[-1])
+                            # print(links[-1])
 
                     else:
-                        words.append(data['results'][j]['enriched_text']['entities'][i]['text'])
-                        nodes.append({'id': count, 'label': words[-1], 'level': 2})
+                        words.append(entities[i]['text'])
+                        nodes.append({'id': count, 'label': words[-1], 'level': 2, 'type': type_rel})
                         # print(nodes[-1])
                         links.append({'source': count, 'target': j})
                         count += 1
-        print(articles[j])
+        # print(articles[j])
         print("-----------------------------------------")
     # print(nodes)
     # print(links)
-    return render_template('cloud.html', nodes=json.dumps(nodes, indent=2), links=json.dumps(links, indent=2), articles=json.dumps(articles, indent =2))
+    print(concepts)
+    return render_template('cloud.html', nodes=json.dumps(nodes, indent=2), links=json.dumps(links, indent=2),
+                           articles=json.dumps(articles, indent=2), concepts=json.dumps(concepts, indent=2))
 
 
 port = os.getenv('VCAP_APP_PORT', '8000')
