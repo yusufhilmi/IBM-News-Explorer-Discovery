@@ -1,16 +1,18 @@
 {% extends "layout.html" %}
 {% block body %}
-
-<div class=graph></div>
-
-<div class=headlines>
-    <div class=titles>
+<div class="w_cloud">
+  <div id="worldcloud"></div>
+</div>
+<div class="headlines">
+    <div class="titles">
         <div class="accord1">
             <ul>
             </ul>
         </div>
     </div>
 </div>
+<div class="graph"></div>
+
 
 <script>
     var width = $(".graph").width()   //comma!!!!
@@ -24,6 +26,56 @@
     var concepts = {{ concepts|safe }};
 
 
+
+    myWords = [].concat(...concepts);
+
+
+
+    // set the dimensions and margins of the graph
+    var margin = {top: 10, right: 10, bottom: 10, left: 10},
+        c_width =$(".w_cloud").width(),
+        c_height = $(".w_cloud").height(); ;
+    
+    // append the svg object to the body of the page
+    var svg = d3.select("#worldcloud").append("svg")
+        .attr("width", c_width )
+        .attr("height", c_height )
+      .append("g")
+        .attr("transform",
+              "translate(" + "" + "," +"" + ")");
+    
+    // Constructs a new cloud layout instance. It run an algorythm to find the position of words that suits your requirements
+    var layout = d3.layout.cloud()
+      .size([width, height])
+      .words(myWords.map(function(d) { return {text: d}; }))
+      .padding(5)
+      .rotate(0)
+      .fontSize(14)
+      .on("end", draw)
+      ;
+    layout.start();
+    var sizeScale = d3.scaleLinear().range([0, 13]).domain([0, d3.max(myWords, d => d.count)]);
+    
+    // This function takes the output of 'layout' above and draw the words
+    // Better not to touch it. To change parameters, play with the 'layout' variable above
+    function draw(words) {
+      svg
+        .append("g")
+          .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+          .selectAll("text")
+            .data(words)
+          .enter().append("text")
+            .style("font-size",14)
+            .style("fill", "#99ecff")
+            .style("font-family", "Impact")
+            .attr("text-anchor", "middle")
+            .attr("transform", function(d) {
+              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function(d) { return d.text; })
+            .on("click", function(d) {console.log(d.text)} )
+            .style("cursor","pointer");
+    }
 
     
 
@@ -89,7 +141,7 @@
      //   console.log(nodes[links[k]['target']]['label']);
      //   console.log(nodes[links[k]['source']]['label']);
      if(concepts[n] instanceof Array){
-      companies =  concepts[n].join();
+      companies =  concepts[n].join(", ");
       console.log(companies);
       return companies;
       }
@@ -103,7 +155,7 @@
                   + '<h6>"companies linked:"' + linkedCompany(i) + '</h6>' + '<h6>"organizations linked:"' + linkedOrganization(i) + '</h6>'
                   + '<h6>"people linked:"' + linkedPerson(i) + '</h6>' 
                   + '<h6>"locations linked:"' + linkedLocation(i) + '</h6>'
-                  + '<h6>"topics linked:"' + linkedTopic(i) + '</h6>' + '</div></li>');
+                  + '<h6>"topics linked:" ' + linkedTopic(i) + '</h6>' + '</div></li>');
             }
         }
     loadHeadlines();

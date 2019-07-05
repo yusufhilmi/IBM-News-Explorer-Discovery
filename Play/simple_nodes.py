@@ -92,11 +92,12 @@ def index():
 
             if entities[i]['relevance'] > 0.05:
                 type_rel = entities[i]['type']  # type of extracted nodes
+                relevance = entities[i]['relevance']
                 if type_rel == 'Person' or type_rel == 'Location' or type_rel == 'Organization' or type_rel == 'Company':
                     if j != 0:
                         if entities[i]['text'] not in words:
                             words.append(entities[i]['text'])
-                            nodes.append({'id': count, 'label': words[-1], 'level': 2, 'type': type_rel})
+                            nodes.append({'id': count, 'label': words[-1], 'level': 2, 'type': type_rel, 'relevance': relevance})
                             # print(words[-1])
                             # print(nodes[-1])
                             links.append({'source': count, 'target': j})
@@ -109,7 +110,7 @@ def index():
 
                     else:
                         words.append(entities[i]['text'])
-                        nodes.append({'id': count, 'label': words[-1], 'level': 2, 'type': type_rel})
+                        nodes.append({'id': count, 'label': words[-1], 'level': 2, 'type': type_rel , 'relevance': relevance})
                         # print(nodes[-1])
                         links.append({'source': count, 'target': j})
                         count += 1
