@@ -42,7 +42,7 @@
         .attr("height", c_height )
       .append("g")
         .attr("transform",
-              "translate(" + "" + "," +"" + ")");
+              "translate(" + margin.right + "," + margin.bottom + ")");
     
     // Constructs a new cloud layout instance. It run an algorythm to find the position of words that suits your requirements
     var layout = d3.layout.cloud()
@@ -54,8 +54,7 @@
       .on("end", draw)
       ;
     layout.start();
-    var sizeScale = d3.scaleLinear().range([0, 13]).domain([0, d3.max(myWords, d => d.count)]);
-    
+   
     // This function takes the output of 'layout' above and draw the words
     // Better not to touch it. To change parameters, play with the 'layout' variable above
     function draw(words) {
@@ -73,12 +72,22 @@
               return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
             })
             .text(function(d) { return d.text; })
-            .on("click", function(d) {console.log(d.text)} )
+            .on("click", function(d){
+              clickOnWord(d);
+            } )
             .style("cursor","pointer");
     }
 
-    
-
+    function clickOnWord(d){
+      var check = d.text;
+      
+      for(i in articles){
+        if(concepts[i].includes(check)){
+        console.log( articles[i] + '--->' + check);
+        selectNode(nodes[i]);
+        }
+      }
+    }
 
 
     function linkedCompany(n){
@@ -142,7 +151,7 @@
      //   console.log(nodes[links[k]['source']]['label']);
      if(concepts[n] instanceof Array){
       companies =  concepts[n].join(", ");
-      console.log(companies);
+      // console.log(companies);
       return companies;
       }
     }
