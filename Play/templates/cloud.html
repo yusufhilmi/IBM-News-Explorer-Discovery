@@ -12,7 +12,59 @@
     </div>
 </div>
 <div class="graph"></div>
+<div id="dmap"></div>
 
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.7/datamaps.all.min.js"></script>
+
+<script>
+
+var fills = {
+  someOtherFill: '#973550',
+  defaultFill: '#4b82db'
+};
+
+var map = new Datamap({
+    element: document.getElementById('dmap'),
+    scope: 'world',
+    fills: fills,
+    geographyConfig: {
+        highlightOnHover: true,
+        highlightFillColor: '#973550'
+    },
+    data: {
+        IL: {
+            fillKey: 'someOtherFill'
+        }
+    },
+    done: function(datamap) {
+        datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+            
+            var state_id = geography.id;
+            var fillkey_obj = datamap.options.data[state_id] || {fillKey: 'defaultFill'};
+            var fillkey = fillkey_obj.fillKey;;
+            var fillkeys = Object.keys(fills);
+            var antikey = fillkeys[Math.abs(fillkeys.indexOf(fillkey) - 1)];
+            var new_fills = {
+              [geography.id] : {
+                fillKey: antikey
+              }
+            };
+            datamap.updateChoropleth(new_fills);
+            console.log(geography.properties.name + '--State id-------===')
+        });
+    }
+});
+
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+
+<script src="http://d3js.org/d3.v5.min.js"></script>
 
 <script>
     var width = $(".graph").width()   //comma!!!!
@@ -65,7 +117,7 @@
             .data(words)
           .enter().append("text")
             .style("font-size",14)
-            .style("fill", "#99ecff")
+            .style("fill", "#4b82db")
             .style("font-family", "Impact")
             .attr("text-anchor", "middle")
             .attr("transform", function(d) {
