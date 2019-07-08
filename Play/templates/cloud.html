@@ -32,13 +32,10 @@ var map = new Datamap({
     fills: fills,
     geographyConfig: {
         highlightOnHover: true,
-        highlightFillColor: '#973550'
+        highlightFillColor: '#973550',
+        popupOnHover: false
     },
-    data: {
-        IL: {
-            fillKey: 'someOtherFill'
-        }
-    },
+    
     done: function(datamap) {
         datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
             
@@ -53,11 +50,25 @@ var map = new Datamap({
               }
             };
             datamap.updateChoropleth(new_fills);
-            console.log(geography.properties.name + '--State id-------===')
+            clickOnLocation(geography.properties.name);
+            
+        }).on('dblclick', function(geography) {
+            console.log(geography.properties.name + '--State id-------===');
+            
         });
     }
 });
 
+function clickOnLocation(d){
+      var check = d;
+      console.log(d + '--State id-------===')
+      for(i in nodes){
+        if(nodes[i]['label'].includes(check)){
+        console.log( nodes[i] + '--->' + check);
+        selectNode(nodes[i]);
+        }
+      }
+    }
 
 </script>
 
@@ -242,8 +253,8 @@ var map = new Datamap({
       .strength(function (link) { return 0.125});
 
 
-      const forceX = d3.forceX(width / 2).strength(0.05);
-      const forceY = d3.forceY(height / 2).strength(0.06);
+      const forceX = d3.forceX(width / 2).strength(0.15);
+      const forceY = d3.forceY(height / 2).strength(0.16);
 
 
       var simulation = d3

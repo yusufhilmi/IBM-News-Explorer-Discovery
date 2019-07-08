@@ -4,6 +4,13 @@ import os
 from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash, json, jsonify
 
+
+from classified import discovery
+username = discovery.username
+password = discovery.password
+environment_id = 'system'
+collection_id = 'news-en'
+
 """   --------------for discovery------------------
 from classified import discovery
 username = discovery.username
@@ -45,12 +52,13 @@ def index():
                                natural_language_query='composite')
     
     data = my_query.result  # encoding fixed mbcs is the correct one
-    """ 
+    """
+    my_query = discovery.query(environment_id,
+                               collection_id,
+                               count=40,
+                               natural_language_query='composite')
 
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "static", "IBM_composite_query.json")
-    data = json.load(open(json_url, encoding="mbcs"))  # encoding fixed mbcs is the correct one
-
+    data = my_query.result  # encoding fixed mbcs is the correct one
     # index_num = len(data['results'][1]['enriched_text']['entities'])
 
     # index_res = len(data['results'])
