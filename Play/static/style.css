@@ -24,12 +24,15 @@ hr              { border: 0; height: 0; border-top: 0.1px solid rgba(0,0,0,0.1);
 .link           { stroke: #999; stroke-width: .5px;}
 #loading        { display: none;}
 #chart          { margin: auto; display: none; }
-.graph          { width: 50%; height: 100%; background: #273452;
+.graph          { width: 40%; height: 100%; background: #273452;
                    float:left;}
 .headlines      { width: 25%;  height: 100%; float: left;
-                   overflow-y: auto;
+                   overflow-y: auto; background: #273452;
                   }
-.w_cloud        {width: 22.3%; height:50%; float:right; border: solid;
+.w_cloud        {width: 33%; height:55%; float:right; border: solid;
+                background: #273452;
+                }
+#dmap        {width: 33%; height:42%; float:right; border: solid;
                 background: #273452;
                 }
 #worldcloud     {width:50%}
